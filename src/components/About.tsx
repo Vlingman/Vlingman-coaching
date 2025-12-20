@@ -1,17 +1,25 @@
 import { Trophy, Medal, Target, Dumbbell } from 'lucide-react';
 import aboutImage from '@/assets/victory-pose.jpeg';
 import podiumImage from '@/assets/podium.jpeg';
-
-const accomplishments = [
-  { icon: Trophy, title: '1st Place', description: 'Swedish National Championships' },
-  { icon: Medal, title: 'Top 10', description: 'Official Strongman Games 2025' },
-  { icon: Target, title: 'Multiple Wins', description: 'Regional & International Events' },
-  { icon: Dumbbell, title: '5+ Years', description: 'Competitive Experience' },
-];
-
+const accomplishments = [{
+  icon: Trophy,
+  title: '1st Place',
+  description: 'Swedish National Championships'
+}, {
+  icon: Medal,
+  title: 'Top 10',
+  description: 'Official Strongman Games 2025'
+}, {
+  icon: Target,
+  title: 'Multiple Wins',
+  description: 'Regional & International Events'
+}, {
+  icon: Dumbbell,
+  title: '5+ Years',
+  description: 'Competitive Experience'
+}];
 const About = () => {
-  return (
-    <section id="about" className="py-20 md:py-32 bg-secondary/30">
+  return <section id="about" className="py-20 md:py-32 bg-secondary/30">
       <div className="container mx-auto px-4 md:px-6">
         {/* Section Header */}
         <div className="text-center mb-16">
@@ -28,18 +36,10 @@ const About = () => {
           {/* Images */}
           <div className="relative">
             <div className="relative z-10">
-              <img
-                src={aboutImage}
-                alt="Victory celebration at strongman competition"
-                className="w-full h-[500px] object-cover object-top rounded-lg shadow-2xl"
-              />
+              <img alt="Victory celebration at strongman competition" className="w-full h-[500px] object-cover object-top rounded-lg shadow-2xl" src="/lovable-uploads/0b4f51b5-50f7-429b-8bbb-90c8eb89abbb.jpg" />
             </div>
             <div className="absolute -bottom-8 -right-8 w-48 h-48 hidden md:block">
-              <img
-                src={podiumImage}
-                alt="First place on podium"
-                className="w-full h-full object-cover rounded-lg border-4 border-background shadow-xl"
-              />
+              <img src={podiumImage} alt="First place on podium" className="w-full h-full object-cover rounded-lg border-4 border-background shadow-xl" />
             </div>
             {/* Decorative element */}
             <div className="absolute -top-4 -left-4 w-24 h-24 border-2 border-primary/30 rounded-lg hidden md:block" />
@@ -69,22 +69,15 @@ const About = () => {
 
             {/* Accomplishments Grid */}
             <div className="grid grid-cols-2 gap-4 mt-8">
-              {accomplishments.map((item, index) => (
-                <div
-                  key={index}
-                  className="bg-card p-4 rounded-lg border border-border hover:border-primary/50 transition-colors"
-                >
+              {accomplishments.map((item, index) => <div key={index} className="bg-card p-4 rounded-lg border border-border hover:border-primary/50 transition-colors">
                   <item.icon className="w-8 h-8 text-primary mb-2" />
                   <p className="font-display font-bold text-foreground">{item.title}</p>
                   <p className="text-sm text-muted-foreground">{item.description}</p>
-                </div>
-              ))}
+                </div>)}
             </div>
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default About;
