@@ -2,40 +2,38 @@ import { Trophy, Medal, Target, Dumbbell, Award, Globe } from 'lucide-react';
 import podiumImage from '@/assets/podium.jpeg';
 import logPressImage from '@/assets/log-press.jpeg';
 import victoryImage from '@/assets/victory-pose.jpeg';
-
-const accomplishments = [
-  {
-    icon: Globe,
-    title: 'World Champion',
-    description: 'World\'s Strongest Man U90',
-  },
-  {
-    icon: Trophy,
-    title: '4x National Champion',
-    description: 'Sweden\'s Strongest Man U90',
-  },
-  {
-    icon: Medal,
-    title: 'Nordic Champion',
-    description: 'Nordic\'s Strongest U90',
-  },
-  {
-    icon: Award,
-    title: 'World Record Holder',
-    description: 'U90 Log Press',
-  },
-];
-
-const stats = [
-  { value: '20+', label: 'Podium Finishes' },
-  { value: '10+', label: 'First Place Wins' },
-  { value: '7+', label: 'Years Competing' },
-  { value: '10+', label: 'Years Training' },
-];
-
+const accomplishments = [{
+  icon: Globe,
+  title: 'World Champion',
+  description: 'World\'s Strongest Man U90'
+}, {
+  icon: Trophy,
+  title: '4x National Champion',
+  description: 'Sweden\'s Strongest Man U90'
+}, {
+  icon: Medal,
+  title: 'Nordic Champion',
+  description: 'Nordic\'s Strongest U90'
+}, {
+  icon: Award,
+  title: 'World Record Holder',
+  description: 'U90 Log Press'
+}];
+const stats = [{
+  value: '20+',
+  label: 'Podium Finishes'
+}, {
+  value: '10+',
+  label: 'First Place Wins'
+}, {
+  value: '7+',
+  label: 'Years Competing'
+}, {
+  value: '10+',
+  label: 'Years Training'
+}];
 const About = () => {
-  return (
-    <section id="about" className="py-20 md:py-32 bg-secondary/30">
+  return <section id="about" className="py-20 md:py-32 bg-secondary/30">
       <div className="container mx-auto px-4 md:px-6">
         {/* Section Header */}
         <div className="text-center mb-16">
@@ -50,12 +48,10 @@ const About = () => {
 
         {/* Stats Bar */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16 max-w-4xl mx-auto">
-          {stats.map((stat, index) => (
-            <div key={index} className="bg-card rounded-lg p-6 text-center border border-border">
+          {stats.map((stat, index) => <div key={index} className="bg-card rounded-lg p-6 text-center border border-border">
               <p className="font-display text-3xl md:text-4xl font-bold text-primary">{stat.value}</p>
               <p className="text-sm text-muted-foreground mt-1">{stat.label}</p>
-            </div>
-          ))}
+            </div>)}
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -63,23 +59,11 @@ const About = () => {
           <div className="relative">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-4">
-                <img
-                  src={victoryImage}
-                  alt="Victory celebration at strongman competition"
-                  className="w-full h-64 object-cover object-top rounded-lg shadow-xl"
-                />
-                <img
-                  src={podiumImage}
-                  alt="First place on podium"
-                  className="w-full h-40 object-cover rounded-lg shadow-lg"
-                />
+                <img src={victoryImage} alt="Victory celebration at strongman competition" className="w-full h-64 object-cover object-top rounded-lg shadow-xl" />
+                <img src={podiumImage} alt="First place on podium" className="w-full h-40 object-cover rounded-lg shadow-lg" />
               </div>
               <div className="pt-8">
-                <img
-                  src={logPressImage}
-                  alt="Log press world record"
-                  className="w-full h-72 object-cover rounded-lg shadow-xl"
-                />
+                <img src={logPressImage} alt="Log press world record" className="w-full h-72 object-cover rounded-lg shadow-xl" />
                 <div className="bg-primary/10 rounded-lg p-4 mt-4 text-center">
                   <p className="font-display text-sm font-bold text-primary uppercase tracking-wider">
                     Multiple European, Nordic & Swedish Records
@@ -103,10 +87,7 @@ const About = () => {
                 day, I understand every aspect of what makes a champion.
               </p>
               <p>
-                With over 10 years of strongman training and 7+ years of competitive experience, I've accumulated 
-                more than 20 podium finishes in national and international competitions, including over 10 first 
-                place victories. I currently hold the U90 world record in the log press, along with multiple 
-                European, Nordic, and Swedish records.
+                With over 10 years of strongman training and 8+ years of competitive experience, I've accumulated more than 20 podium finishes in national and international competitions, including over 10 first place victories. I currently hold the U90 world record in the log press, along with multiple European, Nordic, and Swedish records.
               </p>
               <p>
                 My approach combines proven training methodologies with individualized programming. 
@@ -117,22 +98,15 @@ const About = () => {
 
             {/* Accomplishments Grid */}
             <div className="grid grid-cols-2 gap-4 mt-8">
-              {accomplishments.map((item, index) => (
-                <div
-                  key={index}
-                  className="bg-card p-4 rounded-lg border border-border hover:border-primary/50 transition-colors"
-                >
+              {accomplishments.map((item, index) => <div key={index} className="bg-card p-4 rounded-lg border border-border hover:border-primary/50 transition-colors">
                   <item.icon className="w-8 h-8 text-primary mb-2" />
                   <p className="font-display font-bold text-foreground">{item.title}</p>
                   <p className="text-sm text-muted-foreground">{item.description}</p>
-                </div>
-              ))}
+                </div>)}
             </div>
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default About;
