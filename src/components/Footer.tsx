@@ -69,7 +69,7 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="mailto:coach@example.com" className="text-muted-foreground hover:text-primary transition-colors">
+                <a className="text-muted-foreground hover:text-primary transition-colors" href="mailto:vabba.lingman@gmail.com">
                   Contact Me
                 </a>
               </li>
