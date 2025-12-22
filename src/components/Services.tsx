@@ -2,25 +2,9 @@ import { CheckCircle2, ArrowRight, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import atlasImage from '@/assets/atlas-stone.jpeg';
 import deadliftImage from '@/assets/deadlift.jpeg';
-
-const services = [
-  'Custom periodized training programs',
-  'Event-specific technique coaching',
-  'Peak week strategy & programming',
-  'Competition day game plan',
-  'Weekly video form reviews',
-  'Direct messaging support',
-  'Regular program adjustments',
-  'Competition prep & peaking',
-  'Water cutting for weigh-ins',
-  'Weight class management',
-  'Recovery & deload programming',
-  'At-competition coaching (when possible)',
-];
-
+const services = ['Custom periodized training programs', 'Event-specific technique coaching', 'Peak week strategy & programming', 'Competition day game plan', 'Weekly video form reviews', 'Direct messaging support', 'Regular program adjustments', 'Competition prep & peaking', 'Water cutting for weigh-ins', 'Weight class management', 'Recovery & deload programming', 'At-competition coaching (when possible)'];
 const Services = () => {
-  return (
-    <section id="services" className="py-20 md:py-32">
+  return <section id="services" className="py-20 md:py-32">
       <div className="container mx-auto px-4 md:px-6">
         {/* Section Header */}
         <div className="text-center mb-16">
@@ -50,12 +34,10 @@ const Services = () => {
             </div>
 
             <ul className="grid sm:grid-cols-2 gap-4">
-              {services.map((service, index) => (
-                <li key={index} className="flex items-start gap-3">
+              {services.map((service, index) => <li key={index} className="flex items-start gap-3">
                   <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                   <span className="text-muted-foreground">{service}</span>
-                </li>
-              ))}
+                </li>)}
             </ul>
 
             <div className="mt-8 pt-6 border-t border-border">
@@ -72,13 +54,9 @@ const Services = () => {
           <div className="relative">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-4">
-                <img
-                  src={atlasImage}
-                  alt="Atlas stone training"
-                  className="w-full h-48 object-cover object-[center_30%] rounded-lg shadow-lg"
-                />
+                <img src={atlasImage} alt="Atlas stone training" className="w-full h-48 object-cover object-[center_30%] rounded-lg shadow-lg" />
                 <div className="bg-primary/10 rounded-lg p-6 text-center">
-                  <p className="font-display text-3xl font-bold text-primary">7+</p>
+                  <p className="font-display text-3xl font-bold text-primary">8+</p>
                   <p className="text-sm text-muted-foreground">Years Competition Experience</p>
                 </div>
               </div>
@@ -87,18 +65,12 @@ const Services = () => {
                   <p className="font-display text-3xl font-bold text-foreground">10+</p>
                   <p className="text-sm text-muted-foreground">Years Training Experience</p>
                 </div>
-                <img
-                  src={deadliftImage}
-                  alt="Deadlift training"
-                  className="w-full h-48 object-cover rounded-lg shadow-lg"
-                />
+                <img src={deadliftImage} alt="Deadlift training" className="w-full h-48 object-cover rounded-lg shadow-lg" />
               </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default Services;
