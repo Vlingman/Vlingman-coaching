@@ -138,7 +138,7 @@ const Referrals = () => {
             <img
               src={heroImage}
               alt="Victory celebration"
-              className="w-full h-64 object-cover object-top"
+              className="w-full h-64 object-cover object-[center_35%]"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
             <div className="absolute bottom-4 left-4">
