@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { format } from 'date-fns';
-import { Clock, User, Mail, MessageSquare, ArrowLeft, Send, CalendarIcon } from 'lucide-react';
+import { toZonedTime, fromZonedTime } from 'date-fns-tz';
+import { Clock, User, Mail, MessageSquare, ArrowLeft, Send, CalendarIcon, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -11,6 +12,21 @@ import { Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
 
+const SWEDISH_TIMEZONE = 'Europe/Stockholm';
+
+// Swedish time slots (13:00 - 17:00 in 30 min increments)
+const SWEDISH_TIME_SLOTS = [
+  { hour: 13, minute: 0 },
+  { hour: 13, minute: 30 },
+  { hour: 14, minute: 0 },
+  { hour: 14, minute: 30 },
+  { hour: 15, minute: 0 },
+  { hour: 15, minute: 30 },
+  { hour: 16, minute: 0 },
+  { hour: 16, minute: 30 },
+  { hour: 17, minute: 0 },
+];
+
 const BookConsultation = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -19,21 +35,47 @@ const BookConsultation = () => {
     name: '',
     email: '',
     preferredTime: '',
+    swedishTime: '',
     message: ''
   });
 
-  const timeSlots = [
-    '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM',
-    '3:00 PM', '3:30 PM', '4:00 PM', '4:30 PM', '5:00 PM'
-  ];
+  // Get user's timezone
+  const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const isSwedishTimezone = userTimezone === SWEDISH_TIMEZONE;
+
+  // Generate time slots with local time conversion
+  const timeSlots = useMemo(() => {
+    // Use a reference date for conversion (today)
+    const referenceDate = selectedDate || new Date();
+    
+    return SWEDISH_TIME_SLOTS.map(({ hour, minute }) => {
+      // Create a date in Swedish timezone
+      const swedishDate = new Date(referenceDate);
+      swedishDate.setHours(hour, minute, 0, 0);
+      
+      // Convert from Swedish time to UTC, then to local
+      const utcDate = fromZonedTime(swedishDate, SWEDISH_TIMEZONE);
+      const localDate = toZonedTime(utcDate, userTimezone);
+      
+      const swedishLabel = format(swedishDate, 'h:mm a');
+      const localLabel = format(localDate, 'h:mm a');
+      
+      return {
+        swedish: swedishLabel,
+        local: localLabel,
+        value: swedishLabel, // Use Swedish time as the value
+        showBoth: !isSwedishTimezone && swedishLabel !== localLabel
+      };
+    });
+  }, [selectedDate, userTimezone, isSwedishTimezone]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleTimeSelect = (time: string) => {
-    setFormData(prev => ({ ...prev, preferredTime: time }));
+  const handleTimeSelect = (localTime: string, swedishTime: string) => {
+    setFormData(prev => ({ ...prev, preferredTime: localTime, swedishTime }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -60,12 +102,17 @@ const BookConsultation = () => {
     setIsSubmitting(true);
 
     try {
+      // Send Swedish time to Viktor, but include local time info for context
+      const timeInfo = isSwedishTimezone 
+        ? formData.swedishTime 
+        : `${formData.swedishTime} (Swedish time) / ${formData.preferredTime} (${userTimezone})`;
+      
       const { data, error } = await supabase.functions.invoke('send-consultation-request', {
         body: {
           name: formData.name,
           email: formData.email,
           preferredDate: format(selectedDate, 'EEEE, MMMM d, yyyy'),
-          preferredTime: formData.preferredTime,
+          preferredTime: timeInfo,
           message: formData.message || undefined
         }
       });
@@ -81,6 +128,7 @@ const BookConsultation = () => {
         name: '',
         email: '',
         preferredTime: '',
+        swedishTime: '',
         message: ''
       });
       setSelectedDate(undefined);
@@ -156,20 +204,36 @@ const BookConsultation = () => {
                     <Clock className="w-5 h-5 text-primary" />
                     <h2 className="font-display text-lg font-semibold text-foreground">Select a Time</h2>
                   </div>
+                  {!isSwedishTimezone && (
+                    <div className="flex items-center gap-2 mb-3 text-xs text-muted-foreground">
+                      <Globe className="w-3 h-3" />
+                      <span>Times shown in your local timezone ({userTimezone})</span>
+                    </div>
+                  )}
                   <div className="grid grid-cols-3 gap-2">
                     {timeSlots.map(slot => (
                       <button
-                        key={slot}
+                        key={slot.value}
                         type="button"
-                        onClick={() => handleTimeSelect(slot)}
+                        onClick={() => handleTimeSelect(slot.local, slot.swedish)}
                         className={cn(
-                          "py-2 px-3 text-sm rounded-lg border transition-all duration-200",
-                          formData.preferredTime === slot
+                          "py-2 px-3 text-sm rounded-lg border transition-all duration-200 flex flex-col items-center",
+                          formData.swedishTime === slot.swedish
                             ? "bg-primary text-primary-foreground border-primary"
                             : "bg-background border-border hover:border-primary/50 hover:bg-primary/5"
                         )}
                       >
-                        {slot}
+                        <span>{slot.local}</span>
+                        {slot.showBoth && (
+                          <span className={cn(
+                            "text-xs",
+                            formData.swedishTime === slot.swedish
+                              ? "text-primary-foreground/70"
+                              : "text-muted-foreground"
+                          )}>
+                            ({slot.swedish} SE)
+                          </span>
+                        )}
                       </button>
                     ))}
                   </div>
